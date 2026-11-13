@@ -70,15 +70,22 @@
     <footer>© <span id="ano"></span> Gira · Não afiliado à Mojang/Microsoft</footer>
   </main>
 
-  <dialog id="lightbox" class="lightbox" aria-label="Print em tela cheia">
-    <button class="lb-fechar" type="button" aria-label="Fechar">✕</button>
-    <img alt="">
+  <dialog id="lightbox" class="lightbox" aria-label="Prints em tela cheia">
+    <div class="lb-fundo" aria-hidden="true"></div>
+    <div class="lb-topo">
+      <span class="lb-titulo"></span>
+      <span class="lb-cont" aria-live="polite"></span>
+      <button class="lb-fechar" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="lb-trilho"></div>
     <button class="lb-btn lb-prev" type="button" aria-label="Print anterior">‹</button>
     <button class="lb-btn lb-next" type="button" aria-label="Próximo print">›</button>
-    <span class="lb-cont"></span>
+    <div class="lb-miniaturas"></div>
+    <p class="lb-dica" aria-hidden="true"></p>
   </dialog>
 
   <script src="config.js"></script>
+  <script src="galeria.js"></script>
   <script src="script.js"></script>
   <script src="particulas.js"></script>
 </body>

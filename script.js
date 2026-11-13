@@ -41,20 +41,6 @@
   let filtroAtual = "todos";
   const ICONE_DL = '<svg class="ic-dl" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v3h2v1H6v1H5v1H3V5H2V4H1V3h2zM0 7h8v1H0z"/></svg>';
 
-  function galeriaHTML(p) {
-    const imgs = p.imagens || [];
-    if (!imgs.length) return "";
-    return `
-        <div class="galeria" data-i="0" role="button" tabindex="0" aria-label="Ver prints de ${p.nome} em tela cheia">
-          ${imgs.map((src, i) => `<img src="${src}" alt="${p.nome}: print ${i + 1}" loading="lazy" class="${i ? "" : "ativa"}" onerror="this.classList.add('quebrada')">`).join("")}
-          <div class="gal-vazia">📷 print em breve</div>
-          ${imgs.length > 1 ? `
-          <button class="gal-btn gal-prev" type="button" aria-label="Print anterior">‹</button>
-          <button class="gal-btn gal-next" type="button" aria-label="Próximo print">›</button>
-          <span class="gal-cont">1/${imgs.length}</span>` : ""}
-        </div>`;
-  }
-
   function renderPacks() {
     const lista = SITE.packs.filter((p) => filtroAtual === "todos" || p.tipo === filtroAtual);
     $("#packs").innerHTML = lista.map((p) => {
@@ -80,87 +66,6 @@
       </article>`;
     }).join("");
   }
-
-  // Galeria: setas, deslizar no celular, abrir em tela cheia
-  function passarGaleria(gal, d) {
-    const fotos = [...gal.querySelectorAll("img")];
-    if (fotos.length < 2) return;
-    const i = (+gal.dataset.i + d + fotos.length) % fotos.length;
-    gal.dataset.i = i;
-    fotos.forEach((f, k) => f.classList.toggle("ativa", k === i));
-    const c = gal.querySelector(".gal-cont");
-    if (c) c.textContent = `${i + 1}/${fotos.length}`;
-  }
-  function abrirGaleria(gal) {
-    const fotos = [...gal.querySelectorAll("img")];
-    const atual = fotos[+gal.dataset.i];
-    if (!atual || atual.classList.contains("quebrada")) return;
-    const validas = fotos.filter((f) => !f.classList.contains("quebrada"));
-    abrirLightbox(validas, validas.indexOf(atual));
-  }
-  $("#packs").addEventListener("click", (e) => {
-    const gal = e.target.closest(".galeria");
-    if (!gal) return;
-    if (e.target.closest(".gal-btn")) passarGaleria(gal, e.target.closest(".gal-next") ? 1 : -1);
-    else abrirGaleria(gal);
-  });
-  $("#packs").addEventListener("keydown", (e) => {
-    const gal = e.target.closest(".galeria");
-    if (!gal || e.target !== gal) return;
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirGaleria(gal); }
-    if (e.key === "ArrowLeft") passarGaleria(gal, -1);
-    if (e.key === "ArrowRight") passarGaleria(gal, 1);
-  });
-
-  // deslizar o dedo pro lado troca o print (na galeria e na tela cheia)
-  function aoDeslizar(el, fn) {
-    let x0 = null, y0 = 0;
-    el.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
-    el.addEventListener("touchend", (e) => {
-      if (x0 === null) return;
-      const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
-      x0 = null;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        if (e.cancelable) e.preventDefault(); // não abre a tela cheia depois de deslizar
-        fn(dx < 0 ? 1 : -1, e);
-      }
-    });
-  }
-  aoDeslizar($("#packs"), (d, e) => {
-    const gal = e.target.closest(".galeria");
-    if (gal) passarGaleria(gal, d);
-  });
-
-  // Tela cheia com setas
-  const lb = $("#lightbox");
-  let lbFotos = [], lbI = 0;
-  function mostrarLb() {
-    const f = lbFotos[lbI];
-    lb.querySelector("img").src = f.src;
-    lb.querySelector("img").alt = f.alt;
-    lb.querySelector(".lb-cont").textContent = lbFotos.length > 1 ? `${lbI + 1}/${lbFotos.length}` : "";
-    lb.classList.toggle("unica", lbFotos.length < 2);
-  }
-  function abrirLightbox(fotos, i) {
-    lbFotos = fotos; lbI = Math.max(0, i);
-    mostrarLb();
-    lb.showModal();
-  }
-  function passarLb(d) {
-    lbI = (lbI + d + lbFotos.length) % lbFotos.length;
-    mostrarLb();
-  }
-  aoDeslizar(lb, (d) => { if (lbFotos.length > 1) passarLb(d); });
-  lb.addEventListener("click", (e) => {
-    if (e.target.closest(".lb-prev")) passarLb(-1);
-    else if (e.target.closest(".lb-next")) passarLb(1);
-    else if (e.target.closest(".lb-fechar") || e.target === lb) lb.close();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (!lb.open) return;
-    if (e.key === "ArrowLeft") passarLb(-1);
-    if (e.key === "ArrowRight") passarLb(1);
-  });
 
   if (variosTipos) {
     $("#filtros").innerHTML = tipos.map((t) =>
