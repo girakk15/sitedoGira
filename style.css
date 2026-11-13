@@ -201,7 +201,6 @@ h2 {
   --c: var(--roxo);
   background: rgba(7,9,15,.55);
   border: 2px solid var(--line);
-  border-left: 4px solid var(--c);
   overflow: hidden;
 }
 .pack[data-tipo="shaders"]  { --c: var(--laranja); }
