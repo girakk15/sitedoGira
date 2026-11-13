@@ -4,7 +4,7 @@
 
 const SITE = {
   nome: "Gira",
-  bio: "Minecraft, mods e shaders. Baixe meus arquivos aqui embaixo 👇",
+  bio: "Falo sobre Minecraft, mods, IA e shaders. Baixe coisas úteis e grátis aqui embaixo 👇",
   avatar: "img/skin.webp", // sua skin animada (fundo transparente)
 
   redes: [
