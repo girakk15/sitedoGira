@@ -508,7 +508,6 @@ html.lb-aberto { overflow: hidden; }
   padding: var(--s4);
   background: rgba(7,9,15,.55);
   border: 2px solid var(--line);
-  border-left: 4px solid var(--cyan);
   display: flex; flex-direction: column; gap: var(--s3);
 }
 .srv-nome { font-family: var(--display); font-weight: 700; font-size: 18px; }

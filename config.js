@@ -86,6 +86,7 @@ const SITE = {
     },
     {
       nome: "Fresh Textures 2.0.1",
+      imagens: ["img/shaders/fresh-1.webp", "img/shaders/fresh-2.webp", "img/shaders/fresh-3.webp"],
       tipo: "texturas",
       loader: "Horizon Port",
       descricao: "Texturas vanilla mais caprichadas e detalhadas, sem perder a cara do Minecraft.",
