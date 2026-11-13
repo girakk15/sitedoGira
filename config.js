@@ -62,7 +62,7 @@ const SITE = {
   packs: [
     {
       nome: "MakeUp Ultra Fast 9.6",
-      imagens: ["img/shaders/makeup-1.webp", "img/shaders/makeup-2.webp"],
+      imagens: ["img/shaders/makeup-1.webp", "img/shaders/makeup-2.webp", "img/shaders/makeup-3.webp"],
       tags: ["Ultra Leve"],
       tipo: "shaders",
       loader: "Horizon Port",
