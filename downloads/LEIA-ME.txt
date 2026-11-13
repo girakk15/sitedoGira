@@ -1,0 +1,2 @@
+Coloque aqui os .zip dos packs (até 100 MB cada no GitHub Pages).
+O nome do arquivo precisa bater com o campo "arquivo" no config.js.
