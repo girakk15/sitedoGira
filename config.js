@@ -74,7 +74,7 @@ const SITE = {
     },
     {
       nome: "Mellow 3.5",
-      imagens: ["img/shaders/mellow-1.webp", "img/shaders/mellow-2.webp"],
+      imagens: ["img/shaders/mellow-1.webp", "img/shaders/mellow-2.webp", "img/shaders/mellow-3.webp", "img/shaders/mellow-4.webp"],
       tags: ["Ultra Leve"],
       tipo: "shaders",
       loader: "Horizon Port",
