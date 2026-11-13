@@ -42,7 +42,12 @@
     if (!document.hidden) requestAnimationFrame(quadro);
   }
 
-  addEventListener("resize", tamanho);
+  let larguraAntes = innerWidth;
+  addEventListener("resize", () => {
+    // no celular a barra de endereço muda a altura ao rolar: só recria tudo se a largura mudar
+    if (innerWidth !== larguraAntes) { larguraAntes = innerWidth; tamanho(); }
+    else H = cv.height = innerHeight * dpr;
+  });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) requestAnimationFrame(quadro); });
   tamanho();
   requestAnimationFrame(quadro);

@@ -4,7 +4,7 @@
 
 const SITE = {
   nome: "Gira",
-  bio: "Minecraft, mods e shaders. Baixe meus packs aqui embaixo 👇",
+  bio: "Minecraft, mods e shaders. Baixe meus arquivos aqui embaixo 👇",
   avatar: "img/skin.webp", // sua skin animada (fundo transparente)
 
   redes: [
@@ -14,6 +14,21 @@ const SITE = {
 
   apoio: {
     livepix: "https://livepix.gg/gira",
+  },
+
+  // ----------------------------------------------------------
+  //  SERVIDOR que você joga nas lives.
+  //  Enquanto o "ip" estiver vazio, a seção fica escondida.
+  //  info: linhas extras (rótulo + valor). Linhas sem valor não aparecem.
+  // ----------------------------------------------------------
+  servidor: {
+    nome: "",
+    descricao: "O servidor onde eu jogo nas lives. Entra lá!",
+    ip: "",
+    info: [
+      { rotulo: "Versão", valor: "" },
+      { rotulo: "Lives", valor: "" },
+    ],
   },
 
   // Plataforma para a qual os packs são feitos (aparece no topo da seção Packs)

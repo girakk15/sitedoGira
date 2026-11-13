@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Gira · Minecraft</title>
   <meta name="description" content="Shaders convertidos pra Rust Edition (Horizon Launcher), grátis. Links do TikTok e YouTube do Gira.">
   <meta property="og:title" content="Gira · Minecraft">
@@ -15,10 +15,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="pular" href="#conteudo">Pular pro conteúdo</a>
   <div class="grid-bg" aria-hidden="true"></div>
   <canvas id="particulas" class="particulas" aria-hidden="true"></canvas>
 
-  <main class="wrap">
+  <main class="wrap" id="conteudo">
     <header class="perfil">
       <div class="skin-palco">
         <img id="avatar" class="skin" alt="Skin do Gira no Minecraft" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar-fallback',textContent:'G'}))">
@@ -27,18 +28,33 @@
       <p id="bio" class="bio"></p>
     </header>
 
-    <section class="bloco" aria-labelledby="t-packs">
+    <section class="bloco" id="arquivos" aria-labelledby="t-packs">
       <div class="bloco-topo">
-        <h2 id="t-packs">Packs</h2>
+        <h2 id="t-packs">Arquivos</h2>
         <p class="plataforma" id="plataforma"></p>
       </div>
-      <div class="filtros" id="filtros" role="tablist"></div>
-      <div class="packs" id="packs"></div>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar arquivos"></div>
+      <div class="packs" id="packs" aria-live="polite"></div>
 
       <div class="passos">
         <h3>Como instalar</h3>
         <ol id="passos"></ol>
         <p class="nota" id="nota-packs"></p>
+      </div>
+    </section>
+
+    <section class="bloco servidor" id="servidor" aria-labelledby="t-servidor" hidden>
+      <h2 id="t-servidor">Servidor</h2>
+      <p class="sub" id="srv-desc"></p>
+      <div class="srv-card">
+        <p class="srv-nome" id="srv-nome"></p>
+        <div class="srv-ip">
+          <span class="srv-rotulo">IP</span>
+          <code id="srv-ip"></code>
+        </div>
+        <dl class="srv-info" id="srv-info"></dl>
+        <button class="btn btn-copiar" id="srv-copiar" type="button">Copiar IP</button>
+        <p class="srv-aviso" id="srv-aviso" role="status" aria-live="polite"></p>
       </div>
     </section>
 
@@ -58,10 +74,10 @@
   </main>
 
   <dialog id="lightbox" class="lightbox" aria-label="Print em tela cheia">
+    <button class="lb-fechar" type="button" aria-label="Fechar">✕</button>
     <img alt="">
     <button class="lb-btn lb-prev" type="button" aria-label="Print anterior">‹</button>
     <button class="lb-btn lb-next" type="button" aria-label="Próximo print">›</button>
-    <button class="lb-fechar" type="button" aria-label="Fechar">✕</button>
     <span class="lb-cont"></span>
   </dialog>
 

@@ -18,8 +18,8 @@
 
   // Redes
   $("#redes").innerHTML = SITE.redes.map((r) => `
-    <a class="rede" href="${r.url}" target="_blank" rel="noopener" style="--c:${CORES[r.icone] || "var(--cyan)"}">
-      ${ICONES[r.icone] || ""}
+    <a class="rede" href="${r.url}" target="_blank" rel="noopener" style="--c:${CORES[r.icone] || "var(--cyan)"}" aria-label="${r.nome} ${r.usuario} (abre em nova aba)">
+      ${(ICONES[r.icone] || "").replace("<svg ", '<svg aria-hidden="true" focusable="false" ')}
       <span class="info"><strong>${r.nome}</strong><small>${r.usuario}</small></span>
     </a>`).join("");
 
@@ -45,7 +45,7 @@
     const imgs = p.imagens || [];
     if (!imgs.length) return "";
     return `
-        <div class="galeria" data-i="0">
+        <div class="galeria" data-i="0" role="button" tabindex="0" aria-label="Ver prints de ${p.nome} em tela cheia">
           ${imgs.map((src, i) => `<img src="${src}" alt="${p.nome}: print ${i + 1}" loading="lazy" class="${i ? "" : "ativa"}" onerror="this.classList.add('quebrada')">`).join("")}
           <div class="gal-vazia">📷 print em breve</div>
           ${imgs.length > 1 ? `
@@ -73,7 +73,7 @@
           ${chips ? `<div class="meta">${chips}</div>` : ""}
           <p class="desc">${p.descricao}</p>
           ${p.autor ? `<p class="credito">Original por ${p.original ? `<a href="${p.original}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor}${p.licenca ? ` · licença <a href="${p.licencaUrl}" target="_blank" rel="noopener">${p.licenca}</a> (convertido pro Horizon)` : ""}</p>` : ""}
-          <a class="btn btn-dl" href="${p.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"}>
+          <a class="btn btn-dl" href="${p.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"} aria-label="Baixar ${p.nome}${p.tamanho ? `, ${p.tamanho}` : ""}">
             ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">· ${p.tamanho}</span>` : ""}
           </a>
         </div>
@@ -81,24 +81,54 @@
     }).join("");
   }
 
-  // Galeria: setas + abrir em tela cheia
+  // Galeria: setas, deslizar no celular, abrir em tela cheia
+  function passarGaleria(gal, d) {
+    const fotos = [...gal.querySelectorAll("img")];
+    if (fotos.length < 2) return;
+    const i = (+gal.dataset.i + d + fotos.length) % fotos.length;
+    gal.dataset.i = i;
+    fotos.forEach((f, k) => f.classList.toggle("ativa", k === i));
+    const c = gal.querySelector(".gal-cont");
+    if (c) c.textContent = `${i + 1}/${fotos.length}`;
+  }
+  function abrirGaleria(gal) {
+    const fotos = [...gal.querySelectorAll("img")];
+    const atual = fotos[+gal.dataset.i];
+    if (!atual || atual.classList.contains("quebrada")) return;
+    const validas = fotos.filter((f) => !f.classList.contains("quebrada"));
+    abrirLightbox(validas, validas.indexOf(atual));
+  }
   $("#packs").addEventListener("click", (e) => {
     const gal = e.target.closest(".galeria");
     if (!gal) return;
-    const fotos = [...gal.querySelectorAll("img")];
-    let i = +gal.dataset.i;
-    if (e.target.closest(".gal-btn")) {
-      i = (i + (e.target.closest(".gal-next") ? 1 : -1) + fotos.length) % fotos.length;
-      gal.dataset.i = i;
-      fotos.forEach((f, k) => f.classList.toggle("ativa", k === i));
-      const c = gal.querySelector(".gal-cont");
-      if (c) c.textContent = `${i + 1}/${fotos.length}`;
-    } else {
-      const atual = fotos[i];
-      if (!atual || atual.classList.contains("quebrada")) return;
-      const validas = fotos.filter((f) => !f.classList.contains("quebrada"));
-      abrirLightbox(validas, validas.indexOf(atual));
-    }
+    if (e.target.closest(".gal-btn")) passarGaleria(gal, e.target.closest(".gal-next") ? 1 : -1);
+    else abrirGaleria(gal);
+  });
+  $("#packs").addEventListener("keydown", (e) => {
+    const gal = e.target.closest(".galeria");
+    if (!gal || e.target !== gal) return;
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirGaleria(gal); }
+    if (e.key === "ArrowLeft") passarGaleria(gal, -1);
+    if (e.key === "ArrowRight") passarGaleria(gal, 1);
+  });
+
+  // deslizar o dedo pro lado troca o print (na galeria e na tela cheia)
+  function aoDeslizar(el, fn) {
+    let x0 = null, y0 = 0;
+    el.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener("touchend", (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (e.cancelable) e.preventDefault(); // não abre a tela cheia depois de deslizar
+        fn(dx < 0 ? 1 : -1, e);
+      }
+    });
+  }
+  aoDeslizar($("#packs"), (d, e) => {
+    const gal = e.target.closest(".galeria");
+    if (gal) passarGaleria(gal, d);
   });
 
   // Tela cheia com setas
@@ -120,6 +150,7 @@
     lbI = (lbI + d + lbFotos.length) % lbFotos.length;
     mostrarLb();
   }
+  aoDeslizar(lb, (d) => { if (lbFotos.length > 1) passarLb(d); });
   lb.addEventListener("click", (e) => {
     if (e.target.closest(".lb-prev")) passarLb(-1);
     else if (e.target.closest(".lb-next")) passarLb(1);
@@ -133,20 +164,48 @@
 
   if (variosTipos) {
     $("#filtros").innerHTML = tipos.map((t) =>
-      `<button class="filtro" role="tab" data-t="${t}" aria-selected="${t === filtroAtual}">${NOMES_TIPO[t] || t}</button>`
+      `<button class="filtro" type="button" data-t="${t}" aria-pressed="${t === filtroAtual}">${NOMES_TIPO[t] || t}</button>`
     ).join("");
     $("#filtros").addEventListener("click", (e) => {
       const b = e.target.closest(".filtro");
       if (!b) return;
       filtroAtual = b.dataset.t;
-      document.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-selected", x === b));
+      document.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
       renderPacks();
     });
   }
   renderPacks();
 
+  // Servidor
+  const srv = SITE.servidor;
+  if (srv && srv.ip) {
+    $("#servidor").hidden = false;
+    $("#srv-desc").textContent = srv.descricao || "";
+    $("#srv-nome").textContent = srv.nome || "";
+    $("#srv-ip").textContent = srv.ip;
+    const linhas = (srv.info || []).filter((l) => l.valor);
+    $("#srv-info").innerHTML = linhas.map((l) => `<div><dt>${l.rotulo}</dt><dd>${l.valor}</dd></div>`).join("");
+    const aviso = $("#srv-aviso");
+    let timer;
+    $("#srv-copiar").addEventListener("click", async () => {
+      let ok = false;
+      try { await navigator.clipboard.writeText(srv.ip); ok = true; }
+      catch {
+        const t = Object.assign(document.createElement("textarea"), { value: srv.ip });
+        t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;opacity:0";
+        document.body.append(t); t.select();
+        try { ok = document.execCommand("copy"); } catch {}
+        t.remove();
+      }
+      aviso.textContent = ok ? "✓ IP copiado! Agora é só colar no jogo." : "Não deu pra copiar. Segura o dedo no IP e copia.";
+      clearTimeout(timer);
+      timer = setTimeout(() => (aviso.textContent = ""), 3000);
+    });
+  }
+
   // Apoio
   $("#livepix").href = SITE.apoio.livepix;
+  $("#livepix").setAttribute("aria-label", "Mandar um LivePix (abre em nova aba)");
 
 
 })();
