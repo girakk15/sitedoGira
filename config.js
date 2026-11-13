@@ -18,17 +18,23 @@ const SITE = {
 
   // ----------------------------------------------------------
   //  SERVIDOR que você joga nas lives.
-  //  Enquanto o "ip" estiver vazio, a seção fica escondida.
+  //  enderecos: um bloco por edição (cada um ganha seu botão de copiar).
+  //  Sem nenhum endereço preenchido, a seção fica escondida.
   //  info: linhas extras (rótulo + valor). Linhas sem valor não aparecem.
+  //  pagina: link com o passo a passo pra entrar (opcional).
   // ----------------------------------------------------------
   servidor: {
-    nome: "",
+    nome: "Aranha SMP",
     descricao: "O servidor onde eu jogo nas lives. Entra lá!",
-    ip: "",
+    enderecos: [
+      { edicao: "Java",    ip: "reino-aranha-4d754e.play.shulkerboxes.com" },
+      { edicao: "Bedrock", ip: "reino-aranha-4d754e.bedrock.shulkerboxes.com", porta: "19132" },
+    ],
     info: [
       { rotulo: "Versão", valor: "" },
       { rotulo: "Lives", valor: "" },
     ],
+    pagina: "https://shulkerboxes.com/pt-br/entrar/reino-aranha-4d754e.play.shulkerboxes.com",
   },
 
   // Plataforma para a qual os packs são feitos (aparece no topo da seção Packs)

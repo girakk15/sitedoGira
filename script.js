@@ -178,26 +178,42 @@
 
   // Servidor
   const srv = SITE.servidor;
-  if (srv && srv.ip) {
+  const enderecos = ((srv && srv.enderecos) || []).filter((e) => e.ip);
+  if (enderecos.length) {
     $("#servidor").hidden = false;
     $("#srv-desc").textContent = srv.descricao || "";
     $("#srv-nome").textContent = srv.nome || "";
-    $("#srv-ip").textContent = srv.ip;
+    $("#srv-enderecos").innerHTML = enderecos.map((e, i) => `
+      <div class="srv-end">
+        <div class="srv-ip">
+          <span class="srv-rotulo">${e.edicao || "IP"}</span>
+          <code>${e.ip}</code>
+        </div>
+        ${e.porta ? `<p class="srv-porta">Porta <code>${e.porta}</code></p>` : ""}
+        <button class="btn btn-copiar" type="button" data-i="${i}" aria-label="Copiar IP ${e.edicao || ""}">Copiar IP ${e.edicao || ""}</button>
+      </div>`).join("");
     const linhas = (srv.info || []).filter((l) => l.valor);
     $("#srv-info").innerHTML = linhas.map((l) => `<div><dt>${l.rotulo}</dt><dd>${l.valor}</dd></div>`).join("");
+    if (srv.pagina) { $("#srv-pagina").href = srv.pagina; $("#srv-pagina").hidden = false; }
+
     const aviso = $("#srv-aviso");
     let timer;
-    $("#srv-copiar").addEventListener("click", async () => {
+    $("#srv-enderecos").addEventListener("click", async (ev) => {
+      const b = ev.target.closest(".btn-copiar");
+      if (!b) return;
+      const e = enderecos[+b.dataset.i];
       let ok = false;
-      try { await navigator.clipboard.writeText(srv.ip); ok = true; }
+      try { await navigator.clipboard.writeText(e.ip); ok = true; }
       catch {
-        const t = Object.assign(document.createElement("textarea"), { value: srv.ip });
+        const t = Object.assign(document.createElement("textarea"), { value: e.ip });
         t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;opacity:0";
         document.body.append(t); t.select();
         try { ok = document.execCommand("copy"); } catch {}
         t.remove();
       }
-      aviso.textContent = ok ? "✓ IP copiado! Agora é só colar no jogo." : "Não deu pra copiar. Segura o dedo no IP e copia.";
+      aviso.textContent = ok
+        ? `✓ IP ${e.edicao || ""} copiado! Agora é só colar no jogo.`
+        : "Não deu pra copiar. Segura o dedo no IP e copia.";
       clearTimeout(timer);
       timer = setTimeout(() => (aviso.textContent = ""), 3000);
     });
