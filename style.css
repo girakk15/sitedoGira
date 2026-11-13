@@ -120,7 +120,9 @@ h1 {
 }
 .bio {
   margin-top: var(--s2);
-  max-width: 36ch;
+  max-width: 40ch;
+  white-space: pre-line; /* 
+ na bio vira quebra de linha */
   color: var(--muted);
 }
 
