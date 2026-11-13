@@ -27,7 +27,7 @@ const SITE = {
     nome: "Aranha SMP",
     descricao: "O servidor onde eu jogo nas lives. Entra lá!",
     enderecos: [
-      { edicao: "Java",    ip: "reino-aranha-4d754e.play.shulkerboxes.com" },
+      { edicao: "Java / Rust", ip: "reino-aranha-4d754e.play.shulkerboxes.com" },
       { edicao: "Bedrock", ip: "reino-aranha-4d754e.bedrock.shulkerboxes.com", porta: "19132" },
     ],
     info: [
