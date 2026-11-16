@@ -546,3 +546,17 @@ html.lb-aberto { overflow: hidden; }
 .srv-info div { display: flex; justify-content: space-between; gap: var(--s3); border-top: 1px dashed var(--line); padding-top: var(--s2); }
 .srv-info dt { color: var(--muted); }
 .srv-info dd { font-weight: 500; text-align: right; }
+
+/* ============================================================
+   Contato
+   ============================================================ */
+.contato-email {
+  display: block; margin-top: var(--s4);
+  font-family: ui-monospace, Consolas, monospace; font-size: 17px; font-weight: 700;
+  color: var(--roxo); overflow-wrap: anywhere;
+  user-select: all; -webkit-user-select: all;
+}
+.contato-acoes { display: grid; gap: var(--s3); margin-top: var(--s4); }
+.contato-acoes .btn-neon { margin-top: 0; }
+@media (min-width: 520px) { .contato-acoes { grid-template-columns: 1fr 1fr; } }
+.contato .srv-aviso { margin-top: var(--s3); }

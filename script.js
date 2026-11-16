@@ -128,5 +128,23 @@
   $("#livepix").href = SITE.apoio.livepix;
   $("#livepix").setAttribute("aria-label", "Mandar um LivePix (abre em nova aba)");
 
+  // Contato
+  const ct = SITE.contato;
+  if (ct && ct.email) {
+    $("#contato-email").textContent = ct.email;
+    $("#contato-mailto").href = `mailto:${ct.email}` + (ct.assunto ? `?subject=${encodeURIComponent(ct.assunto)}` : "");
+    const avisoCt = $("#contato-aviso");
+    let timerCt;
+    $("#contato-copiar").addEventListener("click", async () => {
+      let ok = false;
+      try { await navigator.clipboard.writeText(ct.email); ok = true; } catch {}
+      avisoCt.textContent = ok ? "✓ Email copiado!" : "Não deu pra copiar. Segura o dedo no email e copia.";
+      clearTimeout(timerCt);
+      timerCt = setTimeout(() => (avisoCt.textContent = ""), 3000);
+    });
+  } else {
+    $("#contato").hidden = true;
+  }
+
 
 })();
