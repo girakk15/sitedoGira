@@ -56,7 +56,7 @@
   const nbsp = (t) => String(t).replace(/ /g, " "); // "12 MB" não quebra linha
 
   // mostra só os primeiros; o resto aparece no "Ver mais" (busca sempre mostra tudo)
-  const LIMITE = 6;
+  const LIMITE = 4;
   let verTodos = false;
 
   // animarDe: a partir de qual card a animação de entrada roda (null = nenhum)
@@ -86,13 +86,17 @@
       <article class="pack${entra ? " entra" : ""}" data-tipo="${p.tipo}"${entra ? ` style="--i:${i - animarDe}"` : ""}>
         ${galeriaHTML(p)}
         <div class="pack-corpo">
-          <h3>${p.nome}</h3>
-          ${chips ? `<div class="meta">${chips}</div>` : ""}
+          <div class="pack-topo">
+            <h3>${p.nome}</h3>
+            ${chips ? `<div class="meta">${chips}</div>` : ""}
+          </div>
           <p class="desc">${p.descricao}</p>
+          <div class="pack-pe">
           ${p.autor ? `<p class="credito">Original por ${p.original ? `<a href="${p.original}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor}${p.licenca ? ` · <a href="${p.licencaUrl}" target="_blank" rel="noopener">${p.licenca}</a>` : ""}</p>` : ""}
           <a class="btn btn-dl" href="${p.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"} aria-label="Baixar ${p.nome}${p.tamanho ? `, ${p.tamanho}` : ""}">
             ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">${nbsp(p.tamanho)}</span>` : ""}
           </a>
+          </div>
         </div>
       </article>`;
     }).join("");
