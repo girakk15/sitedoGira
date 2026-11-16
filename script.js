@@ -55,40 +55,59 @@
   $("#busca").value = busca;
   const nbsp = (t) => String(t).replace(/ /g, " "); // "12 MB" não quebra linha
 
-  function renderPacks() {
+  // mostra só os primeiros; o resto aparece no "Ver mais" (busca sempre mostra tudo)
+  const LIMITE = 6;
+  let verTodos = false;
+
+  // animarDe: a partir de qual card a animação de entrada roda (null = nenhum)
+  function renderPacks(animarDe = null) {
     const termos = normal(busca).split(/\s+/).filter(Boolean);
     const lista = SITE.packs.filter((p) => {
       if (filtroAtual !== "todos" && p.tipo !== filtroAtual) return false;
       const texto = normal([p.nome, p.descricao, p.autor, p.loader, p.licenca, NOMES_TIPO[p.tipo], ...(p.tags || [])].join(" "));
       return termos.every((t) => texto.includes(t));
     });
+    const btnMais = $("#ver-mais");
     if (!lista.length) {
       $("#packs").innerHTML = `<p class="vazio">Nada encontrado${busca.trim() ? ` pra “${busca.trim().replace(/[<>&"]/g, "")}”` : ""}. Tenta outra palavra.</p>`;
+      btnMais.hidden = true;
       return;
     }
-    $("#packs").innerHTML = lista.map((p) => {
+    const mostrar = busca.trim() || verTodos ? lista : lista.slice(0, LIMITE);
+    $("#packs").innerHTML = mostrar.map((p, i) => {
       const externo = /^https?:\/\//.test(p.arquivo);
       const chips = [
         variosTipos ? `<span class="chip tipo">${NOMES_TIPO[p.tipo] || p.tipo}</span>` : "",
         ...(p.tags || []).map((t) => `<span class="chip destaque">⚡ ${t}</span>`),
         p.versao ? `<span class="chip">MC ${p.versao}</span>` : "",
-        p.loader ? `<span class="chip">${p.loader}</span>` : "",
       ].join("");
+      const entra = animarDe !== null && i >= animarDe;
       return `
-      <article class="pack" data-tipo="${p.tipo}">
+      <article class="pack${entra ? " entra" : ""}" data-tipo="${p.tipo}"${entra ? ` style="--i:${i - animarDe}"` : ""}>
         ${galeriaHTML(p)}
         <div class="pack-corpo">
           <h3>${p.nome}</h3>
           ${chips ? `<div class="meta">${chips}</div>` : ""}
           <p class="desc">${p.descricao}</p>
-          ${p.autor ? `<p class="credito">Original por ${p.original ? `<a href="${p.original}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor}${p.licenca ? ` · licença <a href="${p.licencaUrl}" target="_blank" rel="noopener">${p.licenca}</a> (convertido pro Horizon)` : ""}</p>` : ""}
+          ${p.autor ? `<p class="credito">Original por ${p.original ? `<a href="${p.original}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor}${p.licenca ? ` · <a href="${p.licencaUrl}" target="_blank" rel="noopener">${p.licenca}</a>` : ""}</p>` : ""}
           <a class="btn btn-dl" href="${p.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"} aria-label="Baixar ${p.nome}${p.tamanho ? `, ${p.tamanho}` : ""}">
-            ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">· ${nbsp(p.tamanho)}</span>` : ""}
+            ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">${nbsp(p.tamanho)}</span>` : ""}
           </a>
         </div>
       </article>`;
     }).join("");
+    const resto = lista.length - mostrar.length;
+    btnMais.hidden = !resto;
+    btnMais.textContent = `Ver mais ${resto} ${resto === 1 ? "arquivo" : "arquivos"}`;
   }
+
+  $("#ver-mais").addEventListener("click", () => {
+    verTodos = true;
+    renderPacks(LIMITE);
+    // foco vai pro primeiro card novo (o botão some)
+    const novo = $("#packs").children[LIMITE];
+    if (novo) novo.querySelector("a, button").focus();
+  });
 
   if (variosTipos) {
     $("#filtros").innerHTML = tipos.map((t) =>
@@ -99,7 +118,7 @@
       if (!b) return;
       filtroAtual = b.dataset.t;
       document.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
-      renderPacks();
+      renderPacks(0);
       salvarNaURL();
     });
   }
