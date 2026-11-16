@@ -11,7 +11,7 @@
   const NOMES_TIPO = { todos: "Todos", mods: "Mods", shaders: "Shaders", texturas: "Texturas" };
 
   // Perfil
-  $("#nome").textContent = SITE.nome;
+  $("#nome .logo").alt = SITE.nome;
   $("#bio").textContent = SITE.bio;
   $("#avatar").src = SITE.avatar;
   $("#ano").textContent = new Date().getFullYear();
@@ -28,7 +28,7 @@
   if (plat) {
     $("#plataforma").innerHTML = `
       ${plat.logo ? `<img class="plat-logo" src="${plat.logo}" alt="">` : ""}
-      <span>Feito pra <strong>${plat.nome}</strong> · ${plat.launcher}</span>`;
+      <span>Feito pra <strong translate="no">${plat.nome}</strong> · <span translate="no">${plat.launcher}</span></span>`;
     $("#passos").innerHTML = (plat.passos || []).map((t) => `<li><span>${t}</span></li>`).join("");
   }
   $("#nota-packs").innerHTML =
@@ -38,12 +38,22 @@
   // Packs + filtros
   const tipos = ["todos", ...new Set(SITE.packs.map((p) => p.tipo))];
   const variosTipos = tipos.length > 2;
-  let filtroAtual = "todos";
+  // filtro e busca ficam na URL (?tipo=shaders&q=...) pra dar pra compartilhar o link
+  const params = new URLSearchParams(location.search);
+  let filtroAtual = tipos.includes(params.get("tipo")) ? params.get("tipo") : "todos";
+  function salvarNaURL() {
+    const u = new URL(location.href);
+    filtroAtual === "todos" ? u.searchParams.delete("tipo") : u.searchParams.set("tipo", filtroAtual);
+    busca.trim() ? u.searchParams.set("q", busca.trim()) : u.searchParams.delete("q");
+    history.replaceState(null, "", u);
+  }
   const ICONE_DL = '<svg class="ic-dl" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v3h2v1H6v1H5v1H3V5H2V4H1V3h2zM0 7h8v1H0z"/></svg>';
 
   // busca ignora acentos e maiúsculas
   const normal = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  let busca = "";
+  let busca = params.get("q") || "";
+  $("#busca").value = busca;
+  const nbsp = (t) => String(t).replace(/ /g, " "); // "12 MB" não quebra linha
 
   function renderPacks() {
     const termos = normal(busca).split(/\s+/).filter(Boolean);
@@ -73,7 +83,7 @@
           <p class="desc">${p.descricao}</p>
           ${p.autor ? `<p class="credito">Original por ${p.original ? `<a href="${p.original}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor}${p.licenca ? ` · licença <a href="${p.licencaUrl}" target="_blank" rel="noopener">${p.licenca}</a> (convertido pro Horizon)` : ""}</p>` : ""}
           <a class="btn btn-dl" href="${p.arquivo}" ${externo ? 'target="_blank" rel="noopener"' : "download"} aria-label="Baixar ${p.nome}${p.tamanho ? `, ${p.tamanho}` : ""}">
-            ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">· ${p.tamanho}</span>` : ""}
+            ${ICONE_DL} Baixar ${p.tamanho ? `<span class="tam">· ${nbsp(p.tamanho)}</span>` : ""}
           </a>
         </div>
       </article>`;
@@ -90,10 +100,25 @@
       filtroAtual = b.dataset.t;
       document.querySelectorAll(".filtro").forEach((x) => x.setAttribute("aria-pressed", x === b));
       renderPacks();
+      salvarNaURL();
     });
   }
-  $("#busca").addEventListener("input", (e) => { busca = e.target.value; renderPacks(); });
+  $("#busca").addEventListener("input", (e) => { busca = e.target.value; renderPacks(); salvarNaURL(); });
   renderPacks();
+
+  // copia texto; se a API do navegador falhar, usa o jeito antigo
+  async function copiar(texto) {
+    try { await navigator.clipboard.writeText(texto); return true; }
+    catch {
+      const t = Object.assign(document.createElement("textarea"), { value: texto });
+      t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;opacity:0";
+      document.body.append(t); t.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch {}
+      t.remove();
+      return ok;
+    }
+  }
 
   // Servidor
   const srv = SITE.servidor;
@@ -121,15 +146,7 @@
       const b = ev.target.closest(".btn-copiar");
       if (!b) return;
       const e = enderecos[+b.dataset.i];
-      let ok = false;
-      try { await navigator.clipboard.writeText(e.ip); ok = true; }
-      catch {
-        const t = Object.assign(document.createElement("textarea"), { value: e.ip });
-        t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;opacity:0";
-        document.body.append(t); t.select();
-        try { ok = document.execCommand("copy"); } catch {}
-        t.remove();
-      }
+      const ok = await copiar(e.ip);
       aviso.textContent = ok
         ? `✓ IP ${e.edicao || ""} copiado! Agora é só colar no jogo.`
         : "Não deu pra copiar. Segura o dedo no IP e copia.";
@@ -150,8 +167,7 @@
     const avisoCt = $("#contato-aviso");
     let timerCt;
     $("#contato-copiar").addEventListener("click", async () => {
-      let ok = false;
-      try { await navigator.clipboard.writeText(ct.email); ok = true; } catch {}
+      const ok = await copiar(ct.email);
       avisoCt.textContent = ok ? "✓ Email copiado!" : "Não deu pra copiar. Segura o dedo no email e copia.";
       clearTimeout(timerCt);
       timerCt = setTimeout(() => (avisoCt.textContent = ""), 3000);

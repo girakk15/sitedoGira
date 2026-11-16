@@ -22,9 +22,9 @@
   <main class="wrap" id="conteudo">
     <header class="perfil">
       <div class="skin-palco">
-        <img id="avatar" class="skin" alt="Skin do Gira no Minecraft" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar-fallback',textContent:'G'}))">
+        <img id="avatar" class="skin" alt="Skin do Gira no Minecraft" width="220" height="220" fetchpriority="high" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar-fallback',textContent:'G'}))">
       </div>
-      <h1 id="nome"></h1>
+      <h1 id="nome"><img class="logo" src="gira.svg" alt="Gira" width="2048" height="1305" fetchpriority="high" translate="no"></h1>
       <p id="bio" class="bio"></p>
     </header>
 
@@ -35,7 +35,7 @@
       </div>
       <div class="busca">
         <svg class="busca-ic" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 1h4v1H1zM0 2h1v3H0zM5 2h1v3H5zM1 5h4v1H1zM6 6h1v1H6zM7 7h1v1H7z"/></svg>
-        <input type="search" id="busca" placeholder="Pesquisar arquivos…" aria-label="Pesquisar arquivos" autocomplete="off" spellcheck="false">
+        <input type="search" id="busca" name="q" placeholder="Pesquisar arquivos…" aria-label="Pesquisar arquivos" autocomplete="off" spellcheck="false">
       </div>
       <div class="filtros" id="filtros" role="group" aria-label="Filtrar arquivos"></div>
       <div class="packs" id="packs" aria-live="polite"></div>
@@ -82,7 +82,7 @@
       <nav class="redes" id="redes" aria-label="Redes sociais"></nav>
     </section>
 
-    <footer>© <span id="ano"></span> Gira · Não afiliado à Mojang/Microsoft</footer>
+    <footer>© <span id="ano"></span> <span translate="no">Gira</span> · Não afiliado à <span translate="no">Mojang/Microsoft</span></footer>
   </main>
 
   <dialog id="lightbox" class="lightbox" aria-label="Prints em tela cheia">

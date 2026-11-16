@@ -25,7 +25,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; color-scheme: dark; }
 
 body {
   background: var(--bg);
@@ -48,7 +48,8 @@ a, button, .galeria { touch-action: manipulation; }
   padding: var(--s2) var(--s4);
   background: var(--roxo); color: var(--bg); font-weight: 700; text-decoration: none;
 }
-.pular:focus { top: var(--s4); }
+.pular:focus-visible { top: var(--s4); }
+h2, h3 { text-wrap: balance; }
 
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
@@ -110,13 +111,18 @@ a { color: inherit; }
   font-family: var(--display); font-weight: 700; font-size: 64px; color: var(--roxo);
 }
 
+/* estilo do texto só aparece se o logo não carregar (texto alternativo) */
 h1 {
   font-family: var(--display); font-weight: 700;
   font-size: clamp(36px, 10vw, 44px);
   line-height: 1.1;
-  letter-spacing: .5px;
   color: var(--roxo);
-  text-shadow: 3px 3px 0 var(--roxo-esc), 0 0 14px rgba(180,107,255,.4);
+}
+h1 .logo {
+  display: block;
+  width: clamp(150px, 45vw, 210px); height: auto;
+  margin-top: var(--s2);
+  filter: drop-shadow(0 0 14px rgba(180,107,255,.4));
 }
 .bio {
   margin-top: var(--s2);
@@ -149,7 +155,7 @@ h1 {
 .rede svg { width: 24px; height: 24px; flex: none; fill: var(--c); }
 .rede .info { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
 .rede strong { font-weight: 700; }
-.rede small { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; }
+.rede small { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ============================================================
    Seções
@@ -205,7 +211,9 @@ h2 {
   padding: var(--s2) var(--s4);
   background: transparent; color: var(--muted);
   border: 2px solid var(--line); cursor: pointer;
+  transition: color .15s, border-color .15s;
 }
+.filtro:hover { color: var(--txt); border-color: var(--roxo); }
 .filtro[aria-pressed="true"] {
   color: var(--bg); background: var(--roxo); border-color: var(--roxo);
   box-shadow: 0 0 8px rgba(180,107,255,.3);
@@ -412,7 +420,7 @@ html.lb-aberto { overflow: hidden; }
   font-family: var(--display); font-weight: 700; font-size: 16px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.lb-cont { font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--muted); }
+.lb-cont { font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .lb-fechar {
   flex: none; width: 44px; height: 44px;
   font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1;
