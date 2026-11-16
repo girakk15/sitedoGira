@@ -179,6 +179,24 @@ h2 {
 .plataforma strong { color: var(--txt); font-weight: 500; }
 
 /* filtros */
+/* busca */
+.busca { position: relative; margin-bottom: var(--s3); }
+.busca-ic {
+  position: absolute; left: var(--s3); top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; fill: var(--muted); shape-rendering: crispEdges; pointer-events: none;
+}
+.busca input {
+  width: 100%; min-height: 48px;
+  padding: var(--s3) var(--s4) var(--s3) 40px;
+  font: 500 16px var(--sans); color: var(--txt);
+  background: transparent; border: 2px solid var(--line); border-radius: 0;
+  -webkit-appearance: none; appearance: none;
+}
+.busca input::placeholder { color: var(--muted); }
+.busca input:focus { outline: none; border-color: var(--roxo); box-shadow: 0 0 8px rgba(180,107,255,.3); }
+.busca input:focus + .busca-ic, .busca:focus-within .busca-ic { fill: var(--roxo); }
+.vazio { padding: var(--s5) var(--s4); text-align: center; color: var(--muted); border: 2px dashed var(--line); }
+
 .filtros { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s4); }
 .filtros:empty { display: none; }
 .filtro {

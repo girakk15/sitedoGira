@@ -41,8 +41,21 @@
   let filtroAtual = "todos";
   const ICONE_DL = '<svg class="ic-dl" viewBox="0 0 8 8" aria-hidden="true"><path d="M3 0h2v3h2v1H6v1H5v1H3V5H2V4H1V3h2zM0 7h8v1H0z"/></svg>';
 
+  // busca ignora acentos e maiúsculas
+  const normal = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  let busca = "";
+
   function renderPacks() {
-    const lista = SITE.packs.filter((p) => filtroAtual === "todos" || p.tipo === filtroAtual);
+    const termos = normal(busca).split(/\s+/).filter(Boolean);
+    const lista = SITE.packs.filter((p) => {
+      if (filtroAtual !== "todos" && p.tipo !== filtroAtual) return false;
+      const texto = normal([p.nome, p.descricao, p.autor, p.loader, p.licenca, NOMES_TIPO[p.tipo], ...(p.tags || [])].join(" "));
+      return termos.every((t) => texto.includes(t));
+    });
+    if (!lista.length) {
+      $("#packs").innerHTML = `<p class="vazio">Nada encontrado${busca.trim() ? ` pra “${busca.trim().replace(/[<>&"]/g, "")}”` : ""}. Tenta outra palavra.</p>`;
+      return;
+    }
     $("#packs").innerHTML = lista.map((p) => {
       const externo = /^https?:\/\//.test(p.arquivo);
       const chips = [
@@ -79,6 +92,7 @@
       renderPacks();
     });
   }
+  $("#busca").addEventListener("input", (e) => { busca = e.target.value; renderPacks(); });
   renderPacks();
 
   // Servidor

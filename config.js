@@ -107,10 +107,10 @@ const SITE = {
     {
       nome: "E-LITE 5.1.3",
       imagens: ["img/shaders/elite-1.webp", "img/shaders/elite-2.webp", "img/shaders/elite-3.webp"],
-      tags: ["Ultra Leve"],
+      tags: ["Médio"],
       tipo: "shaders",
       loader: "Horizon Port",
-      descricao: "Versão turbinada do MakeUp: rápida, bonita e cheia de opções pra ajustar.",
+      descricao: "Versão turbinada do MakeUp: mais bonita e cheia de opções pra ajustar. Pede um PC médio.",
       tamanho: "0,6 MB",
       arquivo: "downloads/E-LITE-5.1.3-horizonPort.zip",
       autor: "Entokito",
