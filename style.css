@@ -564,28 +564,6 @@ html.lb-aberto { overflow: hidden; }
   padding: 1px 5px; overflow-wrap: anywhere;
 }
 
-/* ============================================================
-   Servidor
-   ============================================================ */
-.srv-card {
-  margin-top: var(--s4);
-  padding: var(--s4);
-  background: rgba(7,9,15,.55);
-  border: 2px solid var(--line);
-  display: flex; flex-direction: column; gap: var(--s3);
-}
-.srv-nome { font-family: var(--display); font-weight: 700; font-size: 18px; }
-.srv-nome:empty { display: none; }
-.srv-ip { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
-.srv-rotulo {
-  font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: .5px;
-  padding: 2px var(--s2); color: var(--bg); background: var(--cyan);
-}
-.srv-ip code {
-  font-family: ui-monospace, Consolas, monospace; font-size: 15px; font-weight: 700;
-  color: var(--cyan); overflow-wrap: anywhere;
-  user-select: all; -webkit-user-select: all;
-}
 .btn-copiar {
   width: 100%; min-height: 48px;
   padding: var(--s3) var(--s4);
@@ -593,23 +571,8 @@ html.lb-aberto { overflow: hidden; }
   box-shadow: 3px 3px 0 #000, 0 0 10px rgba(34,228,255,.25);
 }
 .btn-copiar:hover { background: #6cefff; }
-.srv-enderecos { display: grid; gap: var(--s4); }
-.srv-end { display: flex; flex-direction: column; gap: var(--s2); }
-.srv-end + .srv-end { padding-top: var(--s4); border-top: 1px dashed var(--line); }
-.srv-porta { font-size: 14px; color: var(--muted); }
-.srv-porta code { font-family: ui-monospace, Consolas, monospace; font-weight: 700; color: var(--txt); }
-.srv-pagina {
-  align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center;
-  font-size: 14px; color: var(--muted); text-underline-offset: 3px;
-}
-.srv-pagina:hover { color: var(--cyan); }
-.srv-aviso:empty { display: none; }
-.srv-aviso { font-size: 14px; color: var(--cyan); text-align: center; }
-.srv-info { display: grid; gap: var(--s2); font-size: 14px; }
-.srv-info:empty { display: none; }
-.srv-info div { display: flex; justify-content: space-between; gap: var(--s3); border-top: 1px dashed var(--line); padding-top: var(--s2); }
-.srv-info dt { color: var(--muted); }
-.srv-info dd { font-weight: 500; text-align: right; }
+.aviso:empty { display: none; }
+.aviso { font-size: 14px; color: var(--cyan); text-align: center; }
 
 /* ============================================================
    Contato
@@ -623,4 +586,4 @@ html.lb-aberto { overflow: hidden; }
 .contato-acoes { display: grid; gap: var(--s3); margin-top: var(--s4); }
 .contato-acoes .btn-neon { margin-top: 0; }
 @media (min-width: 520px) { .contato-acoes { grid-template-columns: 1fr 1fr; } }
-.contato .srv-aviso { margin-top: var(--s3); }
+.contato .aviso { margin-top: var(--s3); }
