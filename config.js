@@ -10,6 +10,7 @@ const SITE = {
   redes: [
     { nome: "TikTok",  usuario: "@giratkk", url: "https://www.tiktok.com/@giratkk", icone: "tiktok" },
     { nome: "YouTube", usuario: "@girakk",  url: "https://www.youtube.com/@girakk",  icone: "youtube" },
+    { nome: "X",       usuario: "@Giraxkk", url: "https://x.com/Giraxkk",           icone: "x" },
   ],
 
   apoio: {
