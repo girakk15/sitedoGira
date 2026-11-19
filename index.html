@@ -28,35 +28,8 @@
       <p id="bio" class="bio"></p>
     </header>
 
-    <section class="bloco" id="arquivos" aria-labelledby="t-packs">
-      <div class="bloco-topo">
-        <h2 id="t-packs">Arquivos</h2>
-        <p class="plataforma" id="plataforma"></p>
-      </div>
-      <div class="busca">
-        <svg class="busca-ic" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 0h3v1H2zM1 1h1v1H1zM5 1h1v1H5zM0 2h1v3H0zM6 2h1v3H6zM1 5h1v1H1zM5 5h1v1H5zM2 6h3v1H2zM6 6h2v1H6zM7 7h2v1H7zM8 8h2v1H8zM9 9h1v1H9z"/></svg>
-        <input type="search" id="busca" name="q" placeholder="Pesquisar arquivos…" aria-label="Pesquisar arquivos" autocomplete="off" spellcheck="false">
-      </div>
-      <div class="filtros" id="filtros" role="group" aria-label="Filtrar arquivos"></div>
-      <div class="packs" id="packs" aria-live="polite"></div>
-      <button class="btn btn-mais" id="ver-mais" type="button" hidden></button>
-
-      <div class="passos">
-        <h3>Como instalar</h3>
-        <ol id="passos"></ol>
-        <p class="nota" id="nota-packs"></p>
-      </div>
-    </section>
-
-
-    <section class="bloco" aria-labelledby="t-apoio">
-      <h2 id="t-apoio">Apoie o canal</h2>
-      <p class="sub">Tudo aqui é grátis. Se algo te ajudou e você quiser dar uma força pro canal, qualquer valor já ajuda 💜</p>
-      <a id="livepix" class="btn btn-neon" target="_blank" rel="noopener">⚡ Mandar um LivePix</a>
-    </section>
-
-    <section class="bloco contato" id="contato" aria-labelledby="t-contato">
-      <h2 id="t-contato">Contato</h2>
+    <section class="bloco contato destaque" id="contato" aria-labelledby="t-contato">
+      <h2 id="t-contato">Parcerias</h2>
       <p class="sub">Pra parcerias, vídeos patrocinados e propostas comerciais, me chama no email.</p>
       <code class="contato-email" id="contato-email"></code>
       <div class="contato-acoes">
@@ -70,6 +43,40 @@
       <h2 id="t-redes">Me segue</h2>
       <p class="sub">Acompanha os vídeos novos por lá.</p>
       <nav class="redes" id="redes" aria-label="Redes sociais"></nav>
+    </section>
+
+    <section class="bloco arquivos" id="arquivos">
+      <h2 class="arq-titulo">
+        <button class="arq-toggle" type="button" id="arq-toggle" aria-expanded="false" aria-controls="arq-corpo">
+          <span class="arq-ic" aria-hidden="true"><svg viewBox="0 0 8 8"><path d="M3 0h2v3h2v1H6v1H5v1H3V5H2V4H1V3h2zM0 7h8v1H0z"/></svg></span>
+          <span class="arq-txt">Arquivos<small id="arq-resumo"></small></span>
+          <svg class="arq-seta" viewBox="0 0 7 4" aria-hidden="true"><path d="M0 0h1v1H0zM6 0h1v1H6zM1 1h1v1H1zM5 1h1v1H5zM2 2h1v1H2zM4 2h1v1H4zM3 3h1v1H3z"/></svg>
+        </button>
+      </h2>
+      <div class="arq-corpo" id="arq-corpo" inert>
+        <div class="arq-dentro"><div class="arq-pad">
+          <p class="plataforma" id="plataforma"></p>
+          <div class="busca">
+            <svg class="busca-ic" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 0h3v1H2zM1 1h1v1H1zM5 1h1v1H5zM0 2h1v3H0zM6 2h1v3H6zM1 5h1v1H1zM5 5h1v1H5zM2 6h3v1H2zM6 6h2v1H6zM7 7h2v1H7zM8 8h2v1H8zM9 9h1v1H9z"/></svg>
+            <input type="search" id="busca" name="q" placeholder="Pesquisar arquivos…" aria-label="Pesquisar arquivos" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar arquivos"></div>
+          <div class="packs" id="packs" aria-live="polite"></div>
+          <button class="btn btn-mais" id="ver-mais" type="button" hidden></button>
+
+          <div class="passos">
+            <h3>Como instalar</h3>
+            <ol id="passos"></ol>
+            <p class="nota" id="nota-packs"></p>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="bloco" aria-labelledby="t-apoio">
+      <h2 id="t-apoio">Apoie o canal</h2>
+      <p class="sub">Tudo aqui é grátis. Se algo te ajudou e você quiser dar uma força pro canal, qualquer valor já ajuda 💜</p>
+      <a id="livepix" class="btn btn-neon" target="_blank" rel="noopener">⚡ Mandar um LivePix</a>
     </section>
 
     <footer>© <span id="ano"></span> <span translate="no">Gira</span> · Não afiliado à <span translate="no">Mojang/Microsoft</span></footer>

@@ -587,3 +587,45 @@ html.lb-aberto { overflow: hidden; }
 .contato-acoes .btn-neon { margin-top: 0; }
 @media (min-width: 520px) { .contato-acoes { grid-template-columns: 1fr 1fr; } }
 .contato .aviso { margin-top: var(--s3); }
+
+/* seção em destaque (parcerias) */
+.bloco.destaque {
+  border-color: var(--roxo);
+  box-shadow: 4px 4px 0 var(--roxo-esc), 0 0 24px rgba(180,107,255,.18);
+}
+.bloco.destaque h2 { color: var(--roxo); text-shadow: 0 0 10px rgba(180,107,255,.35); }
+
+/* ============================================================
+   Arquivos (abre e fecha)
+   ============================================================ */
+.arquivos { padding: 0; }
+.arq-toggle {
+  width: 100%; min-height: 72px;
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s4);
+  color: inherit; background: none; border: 0; text-align: left; cursor: pointer;
+  font: inherit; text-shadow: inherit;
+}
+.arq-toggle:focus-visible { outline-offset: -4px; }
+.arq-ic {
+  flex: none; width: 44px; height: 44px; display: grid; place-items: center;
+  border: 2px solid var(--cyan); background: rgba(34,228,255,.08);
+  transition: background .15s, box-shadow .15s;
+}
+.arq-ic svg { width: 20px; height: 20px; fill: var(--cyan); shape-rendering: crispEdges; }
+.arq-toggle:hover .arq-ic { background: rgba(34,228,255,.18); box-shadow: 0 0 10px rgba(34,228,255,.3); }
+.arq-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.arq-txt small {
+  font-family: var(--sans); font-weight: 400; font-size: 14px;
+  color: var(--muted); text-shadow: none;
+}
+.arq-seta {
+  flex: none; width: 14px; height: 8px; fill: var(--muted); shape-rendering: crispEdges;
+  transition: transform .25s;
+}
+.arquivos.aberto .arq-seta { transform: rotate(180deg); }
+.arq-corpo { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+.arquivos.aberto .arq-corpo { grid-template-rows: 1fr; }
+.arq-dentro { min-height: 0; overflow: hidden; }
+.arq-pad { padding: 0 var(--s4) var(--s5); }
+.arq-pad > .plataforma { margin: 0 0 var(--s4); }

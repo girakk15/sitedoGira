@@ -129,6 +129,19 @@
   $("#busca").addEventListener("input", (e) => { busca = e.target.value; renderPacks(); salvarNaURL(); });
   renderPacks();
 
+  // Arquivos ficam fechados; abre clicando no título
+  const secArq = $("#arquivos"), btnArq = $("#arq-toggle");
+  const n = SITE.packs.length;
+  $("#arq-resumo").textContent = `${n} ${n === 1 ? "arquivo grátis" : "arquivos grátis"}${plat ? ` pra ${plat.nome}` : ""}`;
+  function abrirArquivos(abrir) {
+    secArq.classList.toggle("aberto", abrir);
+    btnArq.setAttribute("aria-expanded", abrir);
+    $("#arq-corpo").inert = !abrir;
+  }
+  btnArq.addEventListener("click", () => abrirArquivos(!secArq.classList.contains("aberto")));
+  // link compartilhado com busca/filtro (ou #arquivos) já abre aberto
+  abrirArquivos(params.has("tipo") || params.has("q") || location.hash === "#arquivos");
+
   // copia texto; se a API do navegador falhar, usa o jeito antigo
   async function copiar(texto) {
     try { await navigator.clipboard.writeText(texto); return true; }
